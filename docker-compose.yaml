@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+    wordpress:
+      image: wordpress
+      depends_on:
+        mysql
+      volumes:
+volumes:
+
+
+networks:
+
