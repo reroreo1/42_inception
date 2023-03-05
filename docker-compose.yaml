@@ -1,13 +1,70 @@
-version: "3.7"
+version: '3'
 
 services:
-    wordpress:
-      image: wordpress
-      depends_on:
-        mysql
-      volumes:
-volumes:
+  nginx:
+    build: ./nginx
+    stdin_open: true
+    tty: true
+    volumes:
+      - first-volume-data:/container-path-1
+    networks:
+      - chabaka
 
+  mariadb:
+    build: ./mariadb
+    stdin_open: true
+    tty: true
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_HOST=localhost
+    ports:
+      - '3306:3306'
+    networks:
+      - chabaka
+  wordpress:
+    build: ./wordpress
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./rezzahradb:/home/rezzahra/db
+      - ./wpsite:/home/rezzahra/site
+    networks:
+      - chabaka
+volumes:
+  first-volume-data:
+    driver: local
+  second-volume-data:
+    driver: local
 
 networks:
+  chabaka:
+    driver: bridge
 
+#  db:
+#     image: mariadb
+#     volumes:
+#       - db_data:/var/lib/mysql
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: your_password_here
+#       MYSQL_DATABASE: wordpress
+#       MYSQL_USER: wordpress
+#       MYSQL_PASSWORD: your_password_here
+
+#   wordpress:
+#     depends_on:
+#       - db
+#     image: wordpress:latest
+#     ports:
+#       - "80:80"
+#     restart: always
+#     volumes:
+#       - ./wordpress:/var/www/html
+#     environment:
+#       WORDPRESS_DB_HOST: db
+#       WORDPRESS_DB_NAME: wordpress
+#       WORDPRESS_DB_USER: wordpress
+#       WORDPRESS_DB_PASSWORD: your_password_here
+
+# volumes:
+#   db_data:
