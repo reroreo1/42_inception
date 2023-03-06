@@ -1,7 +1,15 @@
 FROM debian:buster
 
-RUN apt-get update && apt-get -y install mariadb-server && apt install vim
+RUN apt-get update && apt-get -y install mariadb-server
+
+COPY secure.sh .
+
+ENTRYPOINT [ "bash" , "secure.sh"]
 
 EXPOSE 3306
 
-# Set the default command to start the MariaDB server
+CMD [ "mysqld" ]
+
+
+
+
