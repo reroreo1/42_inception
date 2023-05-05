@@ -1,0 +1,56 @@
+version: '3'
+services:
+  nginx:
+    container_name: "nginx" 
+    build:
+      context: ./nginx
+    ports:
+      - 443:443
+    depends_on:
+      - wordpress
+    volumes:
+      - wp:/var/www/
+    restart: always
+    networks:
+      - chabaka
+  mariadb:
+    container_name: "mariadb" 
+    build:
+      context: ./mariadb
+    restart: always
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - chabaka
+  wordpress:
+    container_name: "wordpress" 
+    build:
+      context: ./wordpress
+    # env_file:
+    #   - .env
+    ports:
+      - 9000:9000
+    restart: always
+    volumes:
+      - wp:/var/www/
+    networks:
+      - chabaka
+    depends_on:
+      - mariadb
+networks:
+  chabaka:
+    name: "chabaka"
+    driver: "bridge"
+volumes:
+  db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/mac/Desktop/inc_final/srcs/data/data-db
+  wp:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/mac/Desktop/inc_final/srcs/data/data-wp
