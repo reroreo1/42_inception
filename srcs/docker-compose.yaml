@@ -9,7 +9,7 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - wp:/var/www/
+      - wp:/home/rezzahra/data/wordpress
     restart: always
     networks:
       - chabaka
@@ -26,13 +26,13 @@ services:
     container_name: "wordpress" 
     build:
       context: ./wordpress
-    # env_file:
-    #   - .env
+    env_file:
+      - .env
     ports:
       - 9000:9000
     restart: always
     volumes:
-      - wp:/var/www/
+      - wp:/home/rezzahra/data/wordpress
     networks:
       - chabaka
     depends_on:
@@ -47,10 +47,10 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /Users/mac/Desktop/inc_final/srcs/data/data-db
+      device: /home/rezzahra/data/data-db
   wp:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /Users/mac/Desktop/inc_final/srcs/data/data-wp
+      device: /home/rezzahra/data/data-wp
